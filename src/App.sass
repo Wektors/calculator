@@ -1,50 +1,79 @@
+body 
+  height: 100vh
+  width: 100vw
+  background: grey
+  margin: 0 0 0 0
+
 .App
   display: flex
   justify-content: center
   align-items: center
   font-family: Ubuntu
 
+
 $gridsize: 8vw
+
+$neon-blue: #5fe8ff
+
+$neon-pink: #fc49ab
+
+$neon-turquoise: #96d8e1
+
 
 .calc-body
   display: grid
   grid-template-columns: $gridsize $gridsize $gridsize $gridsize
   grid-template-rows: $gridsize $gridsize $gridsize $gridsize $gridsize $gridsize
-  padding: 4vw
-  background: grey
+  padding: 0.5*$gridsize
+  background: #000000
   gap: 0.25*$gridsize
-  color: white
+  color: black
   margin-top: 5vh
-  border: 1px solid black
+  box-shadow: 0px 0px 20px grey
 
 .calc-item
   display: grid
-  background: #2743bd
+  background: $neon-blue
   font-size: 2em
   justify-content: center
   align-items: center
-  border: 1px solid black
+  box-shadow: 0px 0px 10px $neon-blue
+  cursor: pointer
+
+.calc-item:hover
+  box-shadow: 0px 0px 16px $neon-blue
+
+.operation
+  background: $neon-pink
+  box-shadow: 0 0 10px $neon-pink
+
+.operation:hover 
+  box-shadow: 0 0 16px $neon-pink
+
+button 
+  border: none
 
 #display
   grid-column-start: 1
   grid-column-end: 5
-  background: #b6b6b6
+  background: $neon-turquoise
+  box-shadow: 0 0 10px $neon-turquoise
   color: black
   font-size: 2em
+  cursor: auto
 
-#ac
+#clear
   grid-row-start: 2
   grid-column-start: 1
   grid-column-end: 3
-  background: #e16262
 
 #equals
   grid-row-start: 5
   grid-row-end: 7
   grid-column: 4
-  background: #67588d
 
 #zero
   grid-row: 6
   grid-column-start: 1
   grid-column-end: 3
+

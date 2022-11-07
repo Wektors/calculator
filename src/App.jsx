@@ -1,63 +1,171 @@
 import "./App.sass";
+import { useState, useEffect } from "react";
 
 function App() {
+	const [calcVal, setcalcVal] = useState([]);
+
+	const digitRegex = /[0-9]/
+
+	useEffect(() => {
+	console.log(calcVal);
+	});
+
 	return (
 		<div className="App">
 			<div className="calc-body">
 				<div id="display" className="calc-item">
-					832524
+					{calcVal}
 				</div>
-				<div id="ac" className="calc-item">
+				<button
+					id="clear"
+					className="calc-item operation"
+					onClick={() => setcalcVal("")}
+				>
 					AC
-				</div>
-				<div id="divide" className="calc-item">
+				</button>
+				<button
+					id="divide"
+					className="calc-item operation"
+					onClick={() => {
+						if (
+							calcVal[calcVal.length - 1] != "+" &&
+							calcVal[calcVal.length - 1] != "-" &&
+							calcVal[calcVal.length - 1] != "/" &&
+							calcVal[calcVal.length - 1] != "*" &&
+							calcVal[calcVal.length - 1] != ""
+						) {
+							setcalcVal(calcVal + "/");
+						}
+					}}
+				>
 					/
-				</div>
-				<div id="multiply" className="calc-item">
+				</button>
+				<button
+					id="multiply"
+					className="calc-item operation"
+					onClick={() => {
+						if (
+							calcVal[calcVal.length - 1] != "+" &&
+							calcVal[calcVal.length - 1] != "-" &&
+							calcVal[calcVal.length - 1] != "/" &&
+							calcVal[calcVal.length - 1] != "*" &&
+							calcVal[calcVal.length - 1] != ""
+						) {
+							setcalcVal(calcVal + "*");
+						} 
+				}}
+				>
 					x
-				</div>
-				<div id="seven" className="calc-item">
+				</button>
+				<button
+					id="seven"
+					className="calc-item"
+					onClick={() => setcalcVal(calcVal + "7")}
+				>
 					7
-				</div>
-				<div id="eight" className="calc-item">
+				</button>
+				<button
+					id="eight"
+					className="calc-item"
+					onClick={() => setcalcVal(calcVal + "8")}
+				>
 					8
-				</div>
-				<div id="nine" className="calc-item">
+				</button>
+				<button
+					id="nine"
+					className="calc-item"
+					onClick={() => setcalcVal(calcVal + "9")}
+				>
 					9
-				</div>
-				<div id="subtract" className="calc-item">
+				</button>
+				<button
+					id="subtract"
+					className="calc-item operation"
+					onClick={() => {
+						if (
+							calcVal[calcVal.length - 1] != "+" &&
+							calcVal[calcVal.length - 1] != "-" &&
+							calcVal[calcVal.length - 1] != "/" &&
+							calcVal[calcVal.length - 1] != "*" &&
+							calcVal[calcVal.length - 1] != ""
+						) {
+							setcalcVal(calcVal + "-");
+						}
+					}}
+				>
 					-
-				</div>
-				<div id="four" className="calc-item">
+				</button>
+				<button
+					id="four"
+					className="calc-item"
+					onClick={() => setcalcVal(calcVal + "4")}
+				>
 					4
-				</div>
-				<div id="five" className="calc-item">
+				</button>
+				<button
+					id="five"
+					className="calc-item"
+					onClick={() => setcalcVal(calcVal + "5")}
+				>
 					5
-				</div>
-				<div id="six" className="calc-item">
+				</button>
+				<button
+					id="six"
+					className="calc-item"
+					onClick={() => setcalcVal(calcVal + "6")}
+				>
 					6
-				</div>
-				<div id="add" className="calc-item">
+				</button>
+				<button
+					id="add"
+					className="calc-item operation"
+					onClick={() => {
+						if (
+							calcVal[calcVal.length - 1] != "+" &&
+							calcVal[calcVal.length - 1] != "-" &&
+							calcVal[calcVal.length - 1] != "/" &&
+							calcVal[calcVal.length - 1] != "*" &&
+							calcVal[calcVal.length - 1] != ""
+						) {
+							setcalcVal(calcVal + "+");
+						} 
+				}}
+				>
 					+
-				</div>
-				<div id="one" className="calc-item">
+				</button>
+				<button
+					id="one"
+					className="calc-item"
+					onClick={() => setcalcVal(calcVal + "1")}
+				>
 					1
-				</div>
-				<div id="two" className="calc-item">
+				</button>
+				<button
+					id="two"
+					className="calc-item"
+					onClick={() => setcalcVal(calcVal + "2")}
+				>
 					2
-				</div>
-				<div id="three" className="calc-item">
+				</button>
+				<button
+					id="three"
+					className="calc-item"
+					onClick={() => setcalcVal(calcVal + "3")}
+				>
 					3
-				</div>
-				<div id="equals" className="calc-item">
+				</button>
+				<button id="equals" className="calc-item operation" >
 					=
-				</div>
-				<div id="zero" className="calc-item">
+				</button>
+				<button id="zero" className="calc-item" onClick={() => setcalcVal(calcVal + "0")}>
 					0
-				</div>
-				<div id="decimal" className="calc-item">
+				</button>
+				<button id="decimal" className="calc-item" onClick={() => {
+					if (calcVal.length == 0) {setcalcVal(calcVal + "0.")}
+					else if (calcVal[calcVal.length - 1] !== ".") {setcalcVal(calcVal + ".")}
+					}}>
 					.
-				</div>
+				</button>
 			</div>
 		</div>
 	);
