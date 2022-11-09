@@ -2,24 +2,27 @@ import "./App.sass";
 import { useState, useEffect } from "react";
 
 function App() {
-	const [calcVal, setcalcVal] = useState([]);
+	const [calcArr, setCalcArr] = useState([0]);
 
-	const digitRegex = /[0-9]/
+	const appendCalcArr = (nextElement) => {
+		const nextArr = [...calcArr, nextElement];
+		setCalcArr(nextArr);
+	};
 
 	useEffect(() => {
-	console.log(calcVal);
+		console.log(calcArr);
 	});
 
 	return (
 		<div className="App">
 			<div className="calc-body">
 				<div id="display" className="calc-item">
-					{calcVal}
+					{calcArr}
 				</div>
 				<button
 					id="clear"
 					className="calc-item operation"
-					onClick={() => setcalcVal("")}
+					onClick={() => setCalcArr([0])}
 				>
 					AC
 				</button>
@@ -28,13 +31,13 @@ function App() {
 					className="calc-item operation"
 					onClick={() => {
 						if (
-							calcVal[calcVal.length - 1] != "+" &&
-							calcVal[calcVal.length - 1] != "-" &&
-							calcVal[calcVal.length - 1] != "/" &&
-							calcVal[calcVal.length - 1] != "*" &&
-							calcVal[calcVal.length - 1] != ""
+							calcArr[calcArr.length - 1] != "+" &&
+							calcArr[calcArr.length - 1] != "-" &&
+							calcArr[calcArr.length - 1] != "/" &&
+							calcArr[calcArr.length - 1] != "*" &&
+							calcArr[calcArr.length - 1] != ""
 						) {
-							setcalcVal(calcVal + "/");
+							appendCalcArr("/");
 						}
 					}}
 				>
@@ -45,36 +48,36 @@ function App() {
 					className="calc-item operation"
 					onClick={() => {
 						if (
-							calcVal[calcVal.length - 1] != "+" &&
-							calcVal[calcVal.length - 1] != "-" &&
-							calcVal[calcVal.length - 1] != "/" &&
-							calcVal[calcVal.length - 1] != "*" &&
-							calcVal[calcVal.length - 1] != ""
+							calcArr[calcArr.length - 1] != "+" &&
+							calcArr[calcArr.length - 1] != "-" &&
+							calcArr[calcArr.length - 1] != "/" &&
+							calcArr[calcArr.length - 1] != "*" &&
+							calcArr[calcArr.length - 1] != ""
 						) {
-							setcalcVal(calcVal + "*");
-						} 
-				}}
+							appendCalcArr("*");
+						}
+					}}
 				>
 					x
 				</button>
 				<button
 					id="seven"
 					className="calc-item"
-					onClick={() => setcalcVal(calcVal + "7")}
+					onClick={() => appendCalcArr(7)}
 				>
 					7
 				</button>
 				<button
 					id="eight"
 					className="calc-item"
-					onClick={() => setcalcVal(calcVal + "8")}
+					onClick={() => appendCalcArr(8)}
 				>
 					8
 				</button>
 				<button
 					id="nine"
 					className="calc-item"
-					onClick={() => setcalcVal(calcVal + "9")}
+					onClick={() => appendCalcArr(9)}
 				>
 					9
 				</button>
@@ -83,13 +86,13 @@ function App() {
 					className="calc-item operation"
 					onClick={() => {
 						if (
-							calcVal[calcVal.length - 1] != "+" &&
-							calcVal[calcVal.length - 1] != "-" &&
-							calcVal[calcVal.length - 1] != "/" &&
-							calcVal[calcVal.length - 1] != "*" &&
-							calcVal[calcVal.length - 1] != ""
+							calcArr[calcArr.length - 1] != "+" &&
+							calcArr[calcArr.length - 1] != "-" &&
+							calcArr[calcArr.length - 1] != "/" &&
+							calcArr[calcArr.length - 1] != "*" &&
+							calcArr[calcArr.length - 1] != ""
 						) {
-							setcalcVal(calcVal + "-");
+							appendCalcArr("-");
 						}
 					}}
 				>
@@ -98,22 +101,18 @@ function App() {
 				<button
 					id="four"
 					className="calc-item"
-					onClick={() => setcalcVal(calcVal + "4")}
+					onClick={() => appendCalcArr(4)}
 				>
 					4
 				</button>
 				<button
 					id="five"
 					className="calc-item"
-					onClick={() => setcalcVal(calcVal + "5")}
+					onClick={() => appendCalcArr(5)}
 				>
 					5
 				</button>
-				<button
-					id="six"
-					className="calc-item"
-					onClick={() => setcalcVal(calcVal + "6")}
-				>
+				<button id="six" className="calc-item" onClick={() => appendCalcArr(6)}>
 					6
 				</button>
 				<button
@@ -121,49 +120,46 @@ function App() {
 					className="calc-item operation"
 					onClick={() => {
 						if (
-							calcVal[calcVal.length - 1] != "+" &&
-							calcVal[calcVal.length - 1] != "-" &&
-							calcVal[calcVal.length - 1] != "/" &&
-							calcVal[calcVal.length - 1] != "*" &&
-							calcVal[calcVal.length - 1] != ""
+							calcArr[calcArr.length - 1] != "+" &&
+							calcArr[calcArr.length - 1] != "-" &&
+							calcArr[calcArr.length - 1] != "/" &&
+							calcArr[calcArr.length - 1] != "*" &&
+							calcArr[calcArr.length - 1] != ""
 						) {
-							setcalcVal(calcVal + "+");
-						} 
-				}}
+							appendCalcArr("+");
+						}
+					}}
 				>
 					+
 				</button>
-				<button
-					id="one"
-					className="calc-item"
-					onClick={() => setcalcVal(calcVal + "1")}
-				>
+				<button id="one" className="calc-item" onClick={() => appendCalcArr(1)}>
 					1
 				</button>
-				<button
-					id="two"
-					className="calc-item"
-					onClick={() => setcalcVal(calcVal + "2")}
-				>
+				<button id="two" className="calc-item" onClick={() => appendCalcArr(2)}>
 					2
 				</button>
 				<button
 					id="three"
 					className="calc-item"
-					onClick={() => setcalcVal(calcVal + "3")}
+					onClick={() => appendCalcArr(3)}
 				>
 					3
 				</button>
-				<button id="equals" className="calc-item operation" >
+				<button id="equals" className="calc-item operation">
 					=
 				</button>
-				<button id="zero" className="calc-item" onClick={() => setcalcVal(calcVal + "0")}>
+				<button
+					id="zero"
+					className="calc-item"
+					onClick={() => appendCalcArr(0)}
+				>
 					0
 				</button>
-				<button id="decimal" className="calc-item" onClick={() => {
-					if (calcVal.length == 0) {setcalcVal(calcVal + "0.")}
-					else if (calcVal[calcVal.length - 1] !== ".") {setcalcVal(calcVal + ".")}
-					}}>
+				<button
+					id="decimal"
+					className="calc-item"
+					onClick={() => appendCalcArr(".")}
+				>
 					.
 				</button>
 			</div>
