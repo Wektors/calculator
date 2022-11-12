@@ -2,11 +2,21 @@ import "./App.sass";
 import { useState, useEffect } from "react";
 
 function App() {
-	const [calcArr, setCalcArr] = useState([0]);
+	const [calcArr, setCalcArr] = useState([]);
 
 	const appendCalcArr = (nextElement) => {
 		const nextArr = [...calcArr, nextElement];
 		setCalcArr(nextArr);
+	};
+
+	const calculate = (calcArr) => {
+		let result = "";
+		for (i in calcArrforEach) {
+			if (calcArr.i.type === "number" && calcArr.i + 1 === "*") {
+				result = calcArr.i * calcArr[i + 2];
+			}
+		}
+		setCalcArr(result);
 	};
 
 	useEffect(() => {
@@ -17,12 +27,12 @@ function App() {
 		<div className="App">
 			<div className="calc-body">
 				<div id="display" className="calc-item">
-					{calcArr}
+					{calcArr.length == 0 ? "0" : calcArr}
 				</div>
 				<button
 					id="clear"
 					className="calc-item operation"
-					onClick={() => setCalcArr([0])}
+					onClick={() => setCalcArr([])}
 				>
 					AC
 				</button>
@@ -158,7 +168,13 @@ function App() {
 				<button
 					id="decimal"
 					className="calc-item"
-					onClick={() => appendCalcArr(".")}
+					onClick={() => {
+						if (calcArr.length == 0) {
+							appendCalcArr(0, ".");
+						} else {
+							appendCalcArr(".");
+						}
+					}}
 				>
 					.
 				</button>
