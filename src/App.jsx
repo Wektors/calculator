@@ -5,23 +5,89 @@ function App() {
 	const [calcArr, setCalcArr] = useState([]);
 
 	const appendCalcArr = (nextElement) => {
-		const nextArr = [...calcArr, nextElement];
-		setCalcArr(nextArr);
+		setCalcArr([...calcArr, nextElement]);
 	};
 
-	const calculate = (calcArr) => {
-		let result = "";
-		for (i in calcArrforEach) {
-			if (calcArr.i.type === "number" && calcArr.i + 1 === "*") {
-				result = calcArr.i * calcArr[i + 2];
+	const calculate = () => {
+		let copyArr = [...calcArr];
+
+		let numsJoinedArr = [];
+		let digitsArr = [];
+
+		for (let i = 0; i < copyArr.length; i++) {
+			// now digits and decimal points will be joined in sub arrays
+
+			let operationCondition =
+				copyArr[i] == "/" ||
+				copyArr[i] == "*" ||
+				copyArr[i] == "-" ||
+				copyArr[i] == "+";
+
+			if (i == 0) {
+				digitsArr.push(copyArr[i]);
+			} else if (operationCondition && i != 0) {
+				numsJoinedArr.push(digitsArr.join(""));
+				digitsArr = [];
+				numsJoinedArr.push(copyArr[i]);
+			} else if (i == copyArr.length - 1 && i != 0) {
+				digitsArr.push(copyArr[i]);
+				numsJoinedArr.push(digitsArr.join(""));
+				digitsArr = [];
+			} else {
+				digitsArr.push(copyArr[i]);
 			}
 		}
-		setCalcArr(result);
+
+		let resultArr = [];
+		console.log(numsJoinedArr);
+
+		for (let i = 0; i < numsJoinedArr.length; i++) {
+			// now we proceed with the mathematical sequence of operations
+			if (numsJoinedArr[i] === "*") {
+				let multiplicationResult =
+					parseFloat(numsJoinedArr[i - 1] + "a") *
+					parseFloat(numsJoinedArr[i + 1] + "a");
+				numsJoinedArr.splice(i - 1, 3, multiplicationResult);
+			}
+		}
+		for (let i = 0; i < numsJoinedArr.length; i++) {
+			if (numsJoinedArr[i] === "/") {
+				let divisionResult =
+					parseFloat(numsJoinedArr[i - 1] + "a") /
+					parseFloat(numsJoinedArr[i + 1] + "a");
+				numsJoinedArr.splice(i - 1, 3, divisionResult);
+			}
+		}
+		for (let i = 0; i < numsJoinedArr.length; i++) {
+			if (numsJoinedArr[i] === "+") {
+
+				let additionResult =
+					parseFloat(numsJoinedArr[i - 1] + "a") +
+					parseFloat(numsJoinedArr[i + 1] + "a");
+				numsJoinedArr.splice(i - 1, 3, additionResult);
+			}
+		}
+		for (let i = 0; i < numsJoinedArr.length; i++) {
+			if (numsJoinedArr[i] === "-") {
+				let subtractionResult =
+					parseFloat(numsJoinedArr[i - 1] + "a") -
+					parseFloat(numsJoinedArr[i + 1] + "a");
+				numsJoinedArr.splice(i - 1, 3, subtractionResult);
+			}
+		}
+		setCalcArr([...numsJoinedArr]);
 	};
 
 	useEffect(() => {
 		console.log(calcArr);
 	});
+
+	const IsNotOperation =
+		calcArr[calcArr.length - 1] != "+" &&
+		calcArr[calcArr.length - 1] != "-" &&
+		calcArr[calcArr.length - 1] != "/" &&
+		calcArr[calcArr.length - 1] != "*" &&
+		calcArr[calcArr.length - 1] != "";
 
 	return (
 		<div className="App">
@@ -40,13 +106,7 @@ function App() {
 					id="divide"
 					className="calc-item operation"
 					onClick={() => {
-						if (
-							calcArr[calcArr.length - 1] != "+" &&
-							calcArr[calcArr.length - 1] != "-" &&
-							calcArr[calcArr.length - 1] != "/" &&
-							calcArr[calcArr.length - 1] != "*" &&
-							calcArr[calcArr.length - 1] != ""
-						) {
+						if (IsNotOperation) {
 							appendCalcArr("/");
 						}
 					}}
@@ -57,13 +117,7 @@ function App() {
 					id="multiply"
 					className="calc-item operation"
 					onClick={() => {
-						if (
-							calcArr[calcArr.length - 1] != "+" &&
-							calcArr[calcArr.length - 1] != "-" &&
-							calcArr[calcArr.length - 1] != "/" &&
-							calcArr[calcArr.length - 1] != "*" &&
-							calcArr[calcArr.length - 1] != ""
-						) {
+						if (IsNotOperation) {
 							appendCalcArr("*");
 						}
 					}}
@@ -73,21 +127,21 @@ function App() {
 				<button
 					id="seven"
 					className="calc-item"
-					onClick={() => appendCalcArr(7)}
+					onClick={() => appendCalcArr("7")}
 				>
 					7
 				</button>
 				<button
 					id="eight"
 					className="calc-item"
-					onClick={() => appendCalcArr(8)}
+					onClick={() => appendCalcArr("8")}
 				>
 					8
 				</button>
 				<button
 					id="nine"
 					className="calc-item"
-					onClick={() => appendCalcArr(9)}
+					onClick={() => appendCalcArr("9")}
 				>
 					9
 				</button>
@@ -95,13 +149,7 @@ function App() {
 					id="subtract"
 					className="calc-item operation"
 					onClick={() => {
-						if (
-							calcArr[calcArr.length - 1] != "+" &&
-							calcArr[calcArr.length - 1] != "-" &&
-							calcArr[calcArr.length - 1] != "/" &&
-							calcArr[calcArr.length - 1] != "*" &&
-							calcArr[calcArr.length - 1] != ""
-						) {
+						if (IsNotOperation) {
 							appendCalcArr("-");
 						}
 					}}
@@ -111,57 +159,63 @@ function App() {
 				<button
 					id="four"
 					className="calc-item"
-					onClick={() => appendCalcArr(4)}
+					onClick={() => appendCalcArr("4")}
 				>
 					4
 				</button>
 				<button
 					id="five"
 					className="calc-item"
-					onClick={() => appendCalcArr(5)}
+					onClick={() => appendCalcArr("5")}
 				>
 					5
 				</button>
-				<button id="six" className="calc-item" onClick={() => appendCalcArr(6)}>
+				<button
+					id="six"
+					className="calc-item"
+					onClick={() => appendCalcArr("6")}
+				>
 					6
 				</button>
 				<button
 					id="add"
 					className="calc-item operation"
 					onClick={() => {
-						if (
-							calcArr[calcArr.length - 1] != "+" &&
-							calcArr[calcArr.length - 1] != "-" &&
-							calcArr[calcArr.length - 1] != "/" &&
-							calcArr[calcArr.length - 1] != "*" &&
-							calcArr[calcArr.length - 1] != ""
-						) {
+						if (IsNotOperation) {
 							appendCalcArr("+");
 						}
 					}}
 				>
 					+
 				</button>
-				<button id="one" className="calc-item" onClick={() => appendCalcArr(1)}>
+				<button
+					id="one"
+					className="calc-item"
+					onClick={() => appendCalcArr("1")}
+				>
 					1
 				</button>
-				<button id="two" className="calc-item" onClick={() => appendCalcArr(2)}>
+				<button
+					id="two"
+					className="calc-item"
+					onClick={() => appendCalcArr("2")}
+				>
 					2
 				</button>
 				<button
 					id="three"
 					className="calc-item"
-					onClick={() => appendCalcArr(3)}
+					onClick={() => appendCalcArr("3")}
 				>
 					3
 				</button>
-				<button id="equals" className="calc-item operation">
+				<button id="equals" className="calc-item operation" onClick={calculate}>
 					=
 				</button>
 				<button
 					id="zero"
 					className="calc-item"
-					onClick={() => appendCalcArr(0)}
+					onClick={() => appendCalcArr("0")}
 				>
 					0
 				</button>
@@ -169,11 +223,7 @@ function App() {
 					id="decimal"
 					className="calc-item"
 					onClick={() => {
-						if (calcArr.length == 0) {
-							appendCalcArr(0, ".");
-						} else {
-							appendCalcArr(".");
-						}
+						appendCalcArr(".");
 					}}
 				>
 					.
