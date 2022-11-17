@@ -5,7 +5,40 @@ function App() {
 	const [calcArr, setCalcArr] = useState([]);
 
 	const appendCalcArr = (nextElement) => {
-		setCalcArr([...calcArr, nextElement]);
+		if (nextElement == "0" || nextElement == ".") {
+			if (nextElement == "." && calcArr[calcArr.length - 1] !== ".") {
+				if (calcArr.length != 0) {
+					let i = calcArr.length - 1;
+					let doubleDecimalPresent = false;
+
+					while (i > 0) {
+						if (
+							calcArr[i] == "/" ||
+							calcArr[i] == "*" ||
+							calcArr[i] == "+" ||
+							calcArr[i] == "-"
+						) {
+							break;
+						} else {
+							if (calcArr[i] == ".") {
+								doubleDecimalPresent = true;
+							}
+							i--;
+						}
+					}
+					if (doubleDecimalPresent == false) {
+						setCalcArr([...calcArr, nextElement]);
+					}
+				} else {
+					setCalcArr([...calcArr, nextElement]);
+				}
+			}
+			if (nextElement == "0" && calcArr[calcArr.length - 1] !== "0") {
+				setCalcArr([...calcArr, nextElement]);
+			}
+		} else {
+			setCalcArr([...calcArr, nextElement]);
+		}
 	};
 
 	const calculate = () => {
@@ -41,8 +74,9 @@ function App() {
 		let resultArr = [];
 		console.log(numsJoinedArr);
 
+		// now we proceed with the mathematical sequence of operations
+
 		for (let i = 0; i < numsJoinedArr.length; i++) {
-			// now we proceed with the mathematical sequence of operations
 			if (numsJoinedArr[i] === "*") {
 				let multiplicationResult =
 					parseFloat(numsJoinedArr[i - 1] + "a") *
@@ -60,7 +94,6 @@ function App() {
 		}
 		for (let i = 0; i < numsJoinedArr.length; i++) {
 			if (numsJoinedArr[i] === "+") {
-
 				let additionResult =
 					parseFloat(numsJoinedArr[i - 1] + "a") +
 					parseFloat(numsJoinedArr[i + 1] + "a");
@@ -82,7 +115,7 @@ function App() {
 		console.log(calcArr);
 	});
 
-	const IsNotOperation =
+	const isNumber =
 		calcArr[calcArr.length - 1] != "+" &&
 		calcArr[calcArr.length - 1] != "-" &&
 		calcArr[calcArr.length - 1] != "/" &&
@@ -106,7 +139,7 @@ function App() {
 					id="divide"
 					className="calc-item operation"
 					onClick={() => {
-						if (IsNotOperation) {
+						if (isNumber) {
 							appendCalcArr("/");
 						}
 					}}
@@ -117,7 +150,7 @@ function App() {
 					id="multiply"
 					className="calc-item operation"
 					onClick={() => {
-						if (IsNotOperation) {
+						if (isNumber) {
 							appendCalcArr("*");
 						}
 					}}
@@ -149,7 +182,7 @@ function App() {
 					id="subtract"
 					className="calc-item operation"
 					onClick={() => {
-						if (IsNotOperation) {
+						if (isNumber) {
 							appendCalcArr("-");
 						}
 					}}
@@ -181,7 +214,7 @@ function App() {
 					id="add"
 					className="calc-item operation"
 					onClick={() => {
-						if (IsNotOperation) {
+						if (isNumber) {
 							appendCalcArr("+");
 						}
 					}}
