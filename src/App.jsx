@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 function App() {
 	const [calcArr, setCalcArr] = useState([]);
 
+	const [prevCalcArr, setPrevCalcArr] = useState([]);
+
 	const appendCalcArr = (nextElement) => {
 		if (nextElement == "0" || nextElement == ".") {
 			if (nextElement == "." && calcArr[calcArr.length - 1] !== ".") {
@@ -39,6 +41,7 @@ function App() {
 		} else {
 			setCalcArr([...calcArr, nextElement]);
 		}
+		setPrevCalcArr([]);
 	};
 
 	const calculate = () => {
@@ -48,13 +51,17 @@ function App() {
 		let digitsArr = [];
 
 		for (let i = 0; i < copyArr.length; i++) {
-			// now digits and decimal points will be joined in sub arrays
+			// now digits, negation and decimal points will be joined in sub arrays
 
 			let operationCondition =
-				copyArr[i] == "/" ||
-				copyArr[i] == "*" ||
-				copyArr[i] == "-" ||
-				copyArr[i] == "+";
+				(copyArr[i - 1] != "/") &
+					(copyArr[i - 1] != "*") &
+					(copyArr[i - 1] != "-") &
+					(copyArr[i - 1] != "+") &&
+				(copyArr[i] == "/" ||
+					copyArr[i] == "*" ||
+					copyArr[i] == "-" ||
+					copyArr[i] == "+");
 
 			if (i == 0) {
 				digitsArr.push(copyArr[i]);
@@ -83,8 +90,7 @@ function App() {
 					parseFloat(numsJoinedArr[i + 1] + "a");
 				numsJoinedArr.splice(i - 1, 3, multiplicationResult);
 			}
-		}
-		for (let i = 0; i < numsJoinedArr.length; i++) {
+
 			if (numsJoinedArr[i] === "/") {
 				let divisionResult =
 					parseFloat(numsJoinedArr[i - 1] + "a") /
@@ -93,29 +99,39 @@ function App() {
 			}
 		}
 		for (let i = 0; i < numsJoinedArr.length; i++) {
+			let isActionDone = false;
 			if (numsJoinedArr[i] === "+") {
 				let additionResult =
 					parseFloat(numsJoinedArr[i - 1] + "a") +
 					parseFloat(numsJoinedArr[i + 1] + "a");
 				numsJoinedArr.splice(i - 1, 3, additionResult);
+				isActionDone = true;
 			}
-		}
-		for (let i = 0; i < numsJoinedArr.length; i++) {
-			if (numsJoinedArr[i] === "-") {
+			if (
+				numsJoinedArr[i] === "-" &&
+				numsJoinedArr[i - 1] !== "*" &&
+				numsJoinedArr[i - 1] !== "+" &&
+				numsJoinedArr[i - 1] !== "/"
+			) {
 				let subtractionResult =
 					parseFloat(numsJoinedArr[i - 1] + "a") -
 					parseFloat(numsJoinedArr[i + 1] + "a");
 				numsJoinedArr.splice(i - 1, 3, subtractionResult);
+				isActionDone = true;
+			}
+			if (isActionDone) {
+				i--;
 			}
 		}
-		setCalcArr([...numsJoinedArr]);
+		setPrevCalcArr([...calcArr, "="]);
+		setCalcArr([numsJoinedArr]);
 	};
 
 	useEffect(() => {
 		console.log(calcArr);
 	});
 
-	const isNumber =
+	const prevIsNumber =
 		calcArr[calcArr.length - 1] != "+" &&
 		calcArr[calcArr.length - 1] != "-" &&
 		calcArr[calcArr.length - 1] != "/" &&
@@ -126,12 +142,16 @@ function App() {
 		<div className="App">
 			<div className="calc-body">
 				<div id="display" className="calc-item">
+					{prevCalcArr}
 					{calcArr.length == 0 ? "0" : calcArr}
 				</div>
 				<button
 					id="clear"
 					className="calc-item operation"
-					onClick={() => setCalcArr([])}
+					onClick={() => {
+						setPrevCalcArr([]);
+						setCalcArr([]);
+					}}
 				>
 					AC
 				</button>
@@ -139,7 +159,7 @@ function App() {
 					id="divide"
 					className="calc-item operation"
 					onClick={() => {
-						if (isNumber) {
+						if (prevIsNumber) {
 							appendCalcArr("/");
 						}
 					}}
@@ -150,7 +170,7 @@ function App() {
 					id="multiply"
 					className="calc-item operation"
 					onClick={() => {
-						if (isNumber) {
+						if (prevIsNumber) {
 							appendCalcArr("*");
 						}
 					}}
@@ -182,7 +202,10 @@ function App() {
 					id="subtract"
 					className="calc-item operation"
 					onClick={() => {
-						if (isNumber) {
+						if (prevIsNumber) {
+							appendCalcArr("-");
+						}
+						if (prevIsNumber == false && calcArr[calcArr.length - 1] != "-") {
 							appendCalcArr("-");
 						}
 					}}
@@ -214,7 +237,7 @@ function App() {
 					id="add"
 					className="calc-item operation"
 					onClick={() => {
-						if (isNumber) {
+						if (prevIsNumber) {
 							appendCalcArr("+");
 						}
 					}}
